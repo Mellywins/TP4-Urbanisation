@@ -1,0 +1,45 @@
+#%RAML 1.0
+title: My-API
+version: v1
+baseUri: http://localhost:3000
+/pet:
+  get:
+    description: List of all the users
+    responses:
+      200:
+        body:
+          application/json:
+            example: "This action returns all pets"
+  post:
+    description: Create new Pet
+    responses:
+      201:
+        body:
+          application/json:
+            example: "This action adds a new pet"
+  /{id}:
+    get:
+      description: Get pet of specefic Id
+      responses:
+        200:
+          body:
+            application/json:
+              example: "This action returns a #1 pet"
+    patch:
+      description: Create pet of specefic Id
+      responses:
+        200:
+          body:
+            application/json:
+              example: "This action updates a #1 pet"
+    delete:
+      description: Removes a pet of a specefic Id
+      responses:
+        200:
+          body:
+            application/json:
+              example: "This action removes a #1 pet"
+        
+      
+    
+    

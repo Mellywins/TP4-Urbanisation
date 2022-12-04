@@ -9,7 +9,7 @@ export class PetService {
   }
 
   findAll() {
-    return `This action returns all pet`;
+    return `This action returns all pets`;
   }
 
   findOne(id: number) {
