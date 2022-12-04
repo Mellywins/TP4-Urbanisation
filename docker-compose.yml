@@ -1,0 +1,24 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  postgresql:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - 5432:5432
+    networks:
+      - app-tier
+    volumes:
+      - $HOME/.pgdata/tp4-project:/bitnami/postgresql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      - POSTGRESQL_USERNAME=my_user
+      - POSTGRESQL_PASSWORD=password123
+      - POSTGRESQL_DATABASE=my_database
+  # myapp:
+  #   image: 'YOUR_APPLICATION_IMAGE'
+  #   networks:
+  #     - app-tier
