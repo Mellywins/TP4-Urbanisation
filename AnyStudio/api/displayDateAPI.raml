@@ -1,0 +1,34 @@
+#%RAML 1.0
+title: upstreamAPI
+version: v1
+baseUri: http://localhost:8086
+/:
+  get:
+    queryParameters:
+      dayOfWeek:
+        description: Day Of the week
+        type: number
+        required: true
+      dayOfMonth:
+        description: Day Of Month
+        type: number
+        required: true
+      monthOfYear:
+        description: The month of the year
+        type: number
+        required: true  
+      year:
+        description: The year
+        type: number
+        required: true                 
+    description: Returns the full text date
+    responses:
+      200:
+        body:
+          application/json:
+            example: {"date": "Monday, March 12, 2019"}
+      400:
+        body:
+          application/json:
+            example: {"error": "Invalid dayOfWeek or monthOfYear"}
+

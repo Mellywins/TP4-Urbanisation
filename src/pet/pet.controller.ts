@@ -1,51 +1,81 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Logger,
-} from '@nestjs/common';
-import { PetService } from './pet.service';
-import { CreatePetDto } from './dto/create-pet.dto';
-import { UpdatePetDto } from './dto/update-pet.dto';
+import { Controller, Get, Logger, Param, Res } from '@nestjs/common';
+import { Response } from 'express';
 
-@Controller('pet')
+@Controller()
 export class PetController {
   private logger: Logger;
-  constructor(private readonly petService: PetService) {
+  constructor() {
     this.logger = new Logger('PetController');
   }
 
-  @Post()
-  create(@Body() createPetDto: CreatePetDto) {
-    this.logger.log('Post request: /', createPetDto);
-    return this.petService.create(createPetDto);
+  @Get('/dayOfWeek/:id')
+  findAll(@Res() res: Response, @Param('id') id: number) {
+    this.logger.log('Get request: /dayOfWeek');
+    const map = {
+      1: 'Sunday',
+      2: 'Monday',
+      3: 'Tuesday',
+      4: 'Wednesday',
+      5: 'Thursday',
+      6: 'Friday',
+      7: 'Saturday',
+    };
+    console.log(id);
+    if (id > 7 || id < 1 || isNaN(id) || id === undefined) {
+      // Return error in XML
+      res.set('Content-Type', 'text/xml');
+      res.status(400);
+      res.send(
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<error>Invalid day of the week</error>',
+      );
+      return;
+    }
+    // Return the day of the week in XML format
+    res.set('Content-Type', 'text/xml');
+    res.send(
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<dayOfWeek>' +
+        map[id] +
+        '</dayOfWeek>',
+    );
   }
 
-  @Get()
-  findAll() {
-    this.logger.log('Get request: /');
-    return this.petService.findAll();
-  }
+  @Get('/monthOfYear/:id')
+  findOne(@Res() res: Response, @Param('id') id: number) {
+    const map = {
+      1: 'January',
+      2: 'February',
+      3: 'March',
+      4: 'April',
+      5: 'May',
+      6: 'June',
+      7: 'July',
+      8: 'August',
+      9: 'September',
+      10: 'October',
+      11: 'November',
+      12: 'December',
+    };
+    if (id > 12 || id < 1 || isNaN(id) || id === undefined) {
+      // Return error in XML
+      res.set('Content-Type', 'text/xml');
+      res.status(400);
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    this.logger.log('Get request: /' + id);
-    return this.petService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePetDto: UpdatePetDto) {
-    this.logger.log('Patch request: /' + id, updatePetDto);
-    return this.petService.update(+id, updatePetDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    this.logger.log('Delete request: /' + id);
-    return this.petService.remove(+id);
+      res.send(
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<error>Invalid month of the year</error>',
+      );
+      return;
+    }
+    // Return the month of the year in XML format
+    res.set('Content-Type', 'text/xml');
+    res.send(
+      '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<monthOfYear>' +
+        map[id] +
+        '</monthOfYear>',
+    );
+    this.logger.log('Get request: /monthOfYear' + id);
   }
 }
